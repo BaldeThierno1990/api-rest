@@ -2,6 +2,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const stuffRoutes = require('./routes/stuff');
+
+const path = require('path');
 /**
  * importation du router authentification dans notre appli
  */
@@ -16,7 +18,7 @@ const app = express();
  * connexion à mongodb atlass
  * avec des configuration dans le cluster
  */
- mongoose.connect('mongodb+srv://thierno:<password>@projet01.ngwma.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
+ mongoose.connect('mongodb+srv://thierno:@projet01.ngwma.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
   { useNewUrlParser: true,
     useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))
@@ -35,6 +37,8 @@ app.use((req, res, next) => {
    * body-parser
    */
   app.use(bodyParser.json());
+
+  app.use('/images', express.static(path.join(__dirname, 'images')));
   
 app.use('/api/stuff', stuffRoutes);
 app.use('/api/auth', userRoutes);
